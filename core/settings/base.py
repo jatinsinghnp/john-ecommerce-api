@@ -34,13 +34,9 @@ DJNAGO_APPS = [
 LOCAL_APPS = ["accounts", "api", "profiles", "product"]
 THIRD_PARTY_APP = [
     "rest_framework",
-    "rest_framework.authtoken",
     "drf_spectacular",
     "drf_spectacular_sidecar",  # required for Django collectstatic discovery
-]
-DEFAULT_AUTHENTICATION_CLASSES = [
-    "rest_framework.authentication.SessionAuthentication",
-    "rest_framework.authentication.TokenAuthentication",
+    "rest_framework_simplejwt",
 ]
 
 
@@ -48,7 +44,12 @@ INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APP + DJNAGO_APPS
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # Other authentication classes if needed.
+    ],
 }
+
 
 SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
@@ -137,3 +138,23 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        days=15
+    ),  # Set a reasonable access token lifetime (e.g., 15 minutes).
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(
+        days=30
+    ),  # Set a longer refresh token lifetime (e.g., 30 days).
+    "SLIDING_TOKEN_REFRESH_LIFETIME_GRACE_PERIOD": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "django-insecure-6)8=76praev38tpxz7vqs+&ae(q4nq8oy(=z9r^v+%03_g-&e9",
+    "VERIFYING_KEY": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+}

@@ -15,7 +15,8 @@ class Profile(models.Model):
     miles = models.CharField(max_length=200, blank=True)
     phonenumber = models.CharField(max_length=20, blank=True)
     owner_full_name = models.CharField(max_length=200, blank=True)
-    linkxdate = models.CharField(max_length=200, blank=True)
+    linkxdate = models.FileField(upload_to="linkxdate", blank=True)
+    docs = models.FileField(upload_to="docs")
     email = models.EmailField(blank=True)
 
     def __str__(self):
