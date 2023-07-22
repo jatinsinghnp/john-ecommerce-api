@@ -30,6 +30,7 @@ ROOT_URL = [
         "api/login/",
         include("accounts.urls", namespace="account"),
     ),
+    path("api/profile/", include("profiles.urls")),
     path("api/", include(router.urls)),
 ]
 
